@@ -139,7 +139,9 @@ let properties = [
         desc: "Cauvery river nearby. Fertile land suitable for paddy cultivation. Clear title with patta available. Two crops per year possible. Survey No: 45/2.",
         survey: "45/2",
         date: "2025-01-15",
-        img: "paddy-field-green"
+        img: "paddy-field-green"// ஒவ்வொரு property-லும் இவ்வளவு add செய்யுங்கள்:
+referral: "",      // யாரும் refer செய்யவில்லை என்றால் empty
+status: "active"  // default status
     },
     {
         id: 2,
@@ -1490,7 +1492,6 @@ function selectVillage(village) {
 
 
 // ==================== FORM SUBMISSIONS ====================
-
 /**
  * Handle "Add Property" form submission
  * @param {Event} e - Form submit event
@@ -1511,6 +1512,9 @@ function submitProperty(e) {
     var desc = document.getElementById("propDesc").value.trim();
     var survey = document.getElementById("propSurvey").value.trim();
 
+    // Get referral info
+    var referral = getCurrentReferral();
+
     // Validation
     if (!name || !phone || !taluk || !village || !type || !area || !price) {
         showToast("Please fill all required fields. அனைத்து கட்டாய புலங்களையும் பூர்த்தி செய்யுங்கள்.", "error");
@@ -1518,16 +1522,16 @@ function submitProperty(e) {
     }
 
     if (area <= 0) {
-        showToast("Area must be greater than 0. நிலப்பரப்பு 0-க்கு மேல் இருக்க வேண்டும்.", "error");
+        showToast("Area must be greater than 0.", "error");
         return;
     }
 
     if (price <= 0) {
-        showToast("Price must be greater than 0. விலை 0-க்கு மேல் இருக்க வேண்டும்.", "error");
+        showToast("Price must be greater than 0.", "error");
         return;
     }
 
-    // Create new property object
+    // Create new property object WITH REFERRAL
     var newProp = {
         id: nextId++,
         name: name,
@@ -1542,7 +1546,9 @@ function submitProperty(e) {
         desc: desc || "No description provided.",
         survey: survey || "",
         date: new Date().toISOString().split("T")[0],
-        img: "new-land-listing-" + nextId
+        img: "new-land-listing-" + nextId,
+        referral: referral,           // 🆕 REFERRAL TRACKING
+        status: "active"              // 🆕 STATUS
     };
 
     // Add to beginning of array
@@ -1552,11 +1558,12 @@ function submitProperty(e) {
     closeModal("addProperty");
     e.target.reset();
 
-    // Show success toast
-    showToast(
-        "உங்கள் விளம்பரம் வெற்றிகரமாக பதிவு செய்யப்பட்டது! Your ad has been posted successfully!",
-        "success"
-    );
+    // Show success toast with referral info
+    var successMsg = "உங்கள் விளம்பரம் வெற்றிகரமாக பதிவு செய்யப்பட்டது!";
+    if (referral) {
+        successMsg += " (Referred by: " + referral + ")";
+    }
+    showToast(successMsg, "success");
 
     // Re-render affected sections
     renderFeatured();
@@ -1877,6 +1884,76 @@ function totalVillagesCount() {
 
 if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
-} else {
+} else {// ==================== REFERRAL TRACKING SYSTEM ====================
+
+/**
+ * Get referral name from URL
+ * URL Example: website.com/?ref=raju
+ */
+function getReferralName() {
+    var params = new URLSearchParams(window.location.search);
+    return params.get("ref") || "";
+}
+
+/**
+ * Save referral to sessionStorage (survives page navigation, clears on tab close)
+ */
+function saveReferral() {
+    var ref = getReferralName();
+    if (ref) {
+        sessionStorage.setItem("nagai_referral", ref);
+    }
+}
+
+/**
+ * Get saved referral
+ */
+function getCurrentReferral() {
+    return sessionStorage.getItem("nagai_referral") || getReferralName() || "";
+}
+
+/**
+ * Generate referral link for a person
+ * @param {string} name - Referral name/code
+ * @returns {string} Full referral URL
+ */
+function generateReferralLink(name) {
+    var base = window.location.origin + window.location.pathname;
+    return base + "?ref=" + encodeURIComponent(name.toLowerCase().replace(/\s+/g, ""));
+}
+
+/**
+ * Copy referral link to clipboard
+ * @param {string} name - Referral name/code
+ */
+function copyReferralLink(name) {
+    var link = generateReferralLink(name);
+    navigator.clipboard.writeText(link).then(function () {
+        showToast("Link copied! " + link, "success");
+    }).catch(function () {
+        // Fallback for older browsers
+        var input = document.createElement("input");
+        input.value = link;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand("copy");
+        document.body.removeChild(input);
+        showToast("Link copied! " + link, "success");
+    });
+}
+
+/**
+ * Share referral link via WhatsApp
+ * @param {string} name - Referral name/code
+ */
+function shareReferralWhatsApp(name) {
+    var link = generateReferralLink(name);
+    var message = "வணக்கம்! நாகப்பட்டினம் மாவட்டத்தில் நிலம் வாங்கவும் விற்கவும் இலவசமாக பதிவு செய்யுங்கள்:\n\n" + link;
+    var waUrl = "https://wa.me/?text=" + encodeURIComponent(message);
+    window.open(waUrl, "_blank");
+}
+
+// Save referral on page load
+saveReferral();
     init();
 }

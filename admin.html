@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - நாகை நிலம்</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        body { background: #050505; color: #e5e5e5; }
+        ::selection { background: #00ffc4; color: #000; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #262626; border-radius: 3px; }
+
+        .stat-card {
+            background: #0a0a0a;
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+        .stat-card:hover {
+            border-color: rgba(0,255,196,0.2);
+            box-shadow: 0 0 30px rgba(0,255,196,0.08);
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        .data-table thead th {
+            background: #0a0a0a;
+            padding: 0.75rem 1rem;
+            font-size: 10px;
+            font-weight: 700;
+            color: #737373;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+        .data-table tbody tr {
+            transition: background 0.2s;
+        }
+        .data-table tbody tr:hover {
+            background: rgba(0,255,196,0.03);
+        }
+        .data-table tbody td {
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            color: #d4d4d4;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            vertical-align: middle;
+        }
+        .badge {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            display: inline-block;
+        }
+        .btn-action {
+            padding: 0.375rem 0.625rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: transparent;
+            color: #a3a3a3;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        .btn-action:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); }
+        .btn-action.delete:hover { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.3); color: #ef4444; }
+        .btn-action.edit:hover { background: rgba(0,255,196,0.1); border-color: rgba(0,255,196,0.3); color: #00ffc4; }
+        .btn-action.view:hover { background: rgba(96,165,250,0.1); border-color: rgba(96,165,250,0.3); color: #60a5fa; }
+
+        .search-admin {
+            background: #111;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 0.5rem;
+            padding: 0.625rem 1rem 0.625rem 2.5rem;
+            font-size: 0.875rem;
+            color: #e5e5e5;
+            width: 100%;
+            transition: border-color 0.3s;
+        }
+        .search-admin:focus { border-color: #00ffc4; outline: none; box-shadow: 0 0 0 3px rgba(0,255,196,0.1); }
+        .search-admin::placeholder { color: #525252; }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: transparent;
+            color: #a3a3a3;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: rgba(0,255,196,0.1);
+            border-color: rgba(0,255,196,0.3);
+            color: #00ffc4;
+        }
+
+        .modal-bg {
+            position: fixed; inset: 0; z-index: 90;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(12px);
+            display: flex; align-items: center; justify-content: center;
+            padding: 1rem;
+        }
+        .modal-box {
+            background: #0a0a0a;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 1rem;
+            width: 100%; max-width: 32rem;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease-out;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .chart-bar {
+            height: 2rem;
+            border-radius: 0.25rem;
+            transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+            min-width: 2px;
+        }
+
+        .toast-box {
+            position: fixed; top: 1.5rem; right: 1.5rem; z-index: 100;
+            display: flex; flex-direction: column; gap: 0.5rem;
+        }
+        .toast-item {
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            animation: slideUp 0.3s ease-out;
+            border: 1px solid;
+        }
+        .toast-success { background: rgba(0,255,196,0.1); border-color: rgba(0,255,196,0.3); color: #00ffc4; }
+        .toast-error { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.3); color: #ef4444; }
+
+        @media (max-width: 768px) {
+            .data-table { font-size: 0.75rem; }
+            .data-table thead th, .data-table tbody td { padding: 0.5rem 0.5rem; }
+            .hide-mobile { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="toast-box" id="toastBox"></div>
+
+<!-- NAV -->
+<nav class="sticky top-0 z-50 bg-[#050505]/90 backdrop-blur-md border-b border-white/5">
+    <div class="max-w-[1400px] mx-auto px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-[#047857] to-[#059669] flex items-center justify-center">
+                <i data-lucide="shield-check" class="w-4 h-4 text-white"></i>
+            </div>
+            <div>
+                <span class="text-sm font-bold text-white">Admin Panel</span>
+                <span class="hidden sm:block text-[10px] text-neutral-500">நாகை நிலம் Management</span>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <a href="index.html" class="btn-action view">
+                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                <span class="hidden sm:inline">View Site</span>
+            </a>
+            <button onclick="exportCSV()" class="btn-action edit">
+                <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                <span class="hidden sm:inline">Export</span>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- CONTENT -->
+<div class="max-w-[1400px] mx-auto px-4 py-8">
+
+    <!-- STATS -->
+    <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+        <div class="stat-card">
+            <div class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1">Total Listings</div>
+            <div class="text-2xl font-bold text-white" id="statTotal">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1">Today</div>
+            <div class="text-2xl font-bold text-[#00ffc4]" id="statToday">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1">This Week</div>
+            <div class="text-2xl font-bold text-[#60a5fa]" id="statWeek">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1">Total Value</div>
+            <div class="text-2xl font-bold text-[#f59e0b]" id="statValue">₹0</div>
+        </div>
+        <div class="stat-card col-span-2 lg:col-span-1">
+            <div class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1">Avg Price/Cent</div>
+            <div class="text-2xl font-bold text-[#a78bfa]" id="statAvg">₹0</div>
+        </div>
+    </div>
+
+    <!-- CHARTS -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <!-- By Type -->
+        <div class="stat-card">
+            <h3 class="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+                <i data-lucide="pie-chart" class="w-4 h-4 text-[#00ffc4]"></i> Land Type Distribution
+            </h3>
+            <div id="typeChart" class="space-y-3"></div>
+        </div>
+        <!-- By Taluk -->
+        <div class="stat-card">
+            <h3 class="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+                <i data-lucide="map" class="w-4 h-4 text-[#00ffc4]"></i> Listings by Taluk
+            </h3>
+            <div id="talukChart" class="space-y-3"></div>
+        </div>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="stat-card mb-6">
+        <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between mb-4">
+            <h3 class="text-sm font-semibold text-white flex items-center gap-2">
+                <i data-lucide="database" class="w-4 h-4 text-[#00ffc4]"></i> All Listings
+                <span class="text-xs text-neutral-500 font-normal" id="filterCount">(0)</span>
+            </h3>
+            <div class="relative w-full sm:w-64">
+                <i data-lucide="search" class="w-4 h-4 text-neutral-500 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                <input type="text" id="adminSearch" class="search-admin" placeholder="Search name, village, phone..." oninput="renderTable()">
+            </div>
+        </div>
+        <div class="flex flex-wrap gap-2">
+            <button class="filter-btn active" onclick="setTypeFilter('all', this)">All</button>
+            <button class="filter-btn" onclick="setTypeFilter('agricultural', this)">விவசாய</button>
+            <button class="filter-btn" onclick="setTypeFilter('residential', this)">குடியிருப்பு</button>
+            <button class="filter-btn" onclick="setTypeFilter('commercial', this)">வணிக</button>
+            <button class="filter-btn" onclick="setTypeFilter('house', this)">வீடு</button>
+            <button class="filter-btn" onclick="setTypeFilter('farmhouse', this)">பண்ணை</button>
+            <button class="filter-btn" onclick="setTypeFilter('industrial', this)">தொழில்</button>
+        </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="stat-card p-0 overflow-hidden mb-8">
+        <div class="overflow-x-auto" style="max-height: 600px; overflow-y: auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Owner</th>
+                        <th>Phone</th>
+                        <th>Village</th>
+                        <th>Taluk</th>
+                        <th class="hide-mobile">Type</th>
+                        <th>Area</th>
+                        <th>Price</th>
+                        <th class="hide-mobile">Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+        <div id="emptyTable" class="hidden text-center py-16">
+            <i data-lucide="inbox" class="w-12 h-12 text-neutral-700 mx-auto mb-3"></i>
+            <p class="text-neutral-500">No listings found</p>
+        </div>
+    </div>
+
+    <!-- RECENT ACTIVITY LOG -->
+    <div class="stat-card">
+        <h3 class="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+            <i data-lucide="activity" class="w-4 h-4 text-[#00ffc4]"></i> Activity Log
+        </h3>
+        <div id="activityLog" class="space-y-2 max-h-64 overflow-y-auto"></div>
+    </div>
+</div>
+
+<!-- VIEW MODAL -->
+<div id="viewModal" class="modal-bg hidden" onclick="if(event.target===this)closeViewModal()">
+    <div class="modal-box">
+        <div class="p-6 border-b border-white/5 flex items-center justify-between">
+            <h3 class="text-lg font-semibold text-white">Listing Details</h3>
+            <button onclick="closeViewModal()" class="btn-action"><i data-lucide="x" class="w-4 h-4"></i></button>
+        </div>
+        <div id="viewContent" class="p-6"></div>
+    </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div id="editModal" class="modal-bg hidden" onclick="if(event.target===this)closeEditModal()">
+    <div class="modal-box">
+        <div class="p-6 border-b border-white/5 flex items-center justify-between">
+            <h3 class="text-lg font-semibold text-white">Edit Listing</h3>
+            <button onclick="closeEditModal()" class="btn-action"><i data-lucide="x" class="w-4 h-4"></i></button>
+        </div>
+        <form onsubmit="saveEdit(event)" class="p-6 space-y-4">
+            <input type="hidden" id="editId">
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1 block">Name</label>
+                    <input id="editName" required class="w-full bg-[#111] border border-white/10 rounded-lg px-3 py-2.5 text-sm text-neutral-200 focus:border-[#00ffc4] focus:outline-none">
+                </div>
+                <div>
+                    <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1 block">Phone</label>
+                    <input id="editPhone" required class="w-full bg-[#111] border border-white/10 rounded-lg px-3 py-2.5 text-sm text-neutral-200 focus:border-[#00ffc4] focus:outline-none">
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1 block">Price (₹)</label>
+                    <input id="editPrice" type="number" required class="w-full bg-[#111] border border-white/10 rounded-lg px-3 py-2.5 text-sm text-neutral-200 focus:border-[#00ffc4] focus:outline-none">
+                </div>
+                <div>
+                    <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1 block">Area (cents)</label>
+                    <input id="editArea" type="number" required class="w-full bg-[#111] border border-white/10 rounded-lg px-3 py-2.5 text-sm text-neutral-200 focus:border-[#00ffc4] focus:outline-none">
+                </div>
+            </div>
+            <div>
+                <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1 block">Status</label>
+                <select id="editStatus" class="w-full bg-[#111] border border-white/10 rounded-lg px-3 py-2.5 text-sm text-neutral-200 focus:border-[#00ffc4] focus:outline-none">
+                    <option value="active">Active - செயலில்</option>
+                    <option value="sold">Sold - விற்றது</option>
+                    <option value="hold">Hold - நிறுத்தம்</option>
+                    <option value="rejected">Rejected - நிராகரிக்கப்பட்டது</option>
+                </select>
+            </div>
+            <div>
+                <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1 block">Admin Notes</label>
+                <textarea id="editNotes" rows="2" class="w-full bg-[#111] border border-white/10 rounded-lg px-3 py-2.5 text-sm text-neutral-200 focus:border-[#00ffc4] focus:outline-none resize-none" placeholder="Internal notes..."></textarea>
+            </div>
+            <div class="flex gap-3 pt-2">
+                <button type="submit" class="flex-1 bg-gradient-to-r from-[#047857] to-[#059669] text-white font-semibold py-2.5 rounded-lg text-sm">Save Changes</button>
+                <button type="button" onclick="closeEditModal()" class="flex-1 border border-white/10 text-neutral-300 font-medium py-2.5 rounded-lg text-sm hover:bg-white/5">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- DELETE CONFIRM -->
+<div id="deleteModal" class="modal-bg hidden" onclick="if(event.target===this)closeDeleteModal()">
+    <div class="modal-box" style="max-width:24rem">
+        <div class="p-6 text-center">
+            <div class="w-14 h-14 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="trash-2" class="w-7 h-7 text-red-400"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-white mb-2">Delete Listing?</h3>
+            <p class="text-sm text-neutral-400 mb-6" id="deleteText">Are you sure?</p>
+            <div class="flex gap-3">
+                <button onclick="confirmDelete()" class="flex-1 bg-red-500/20 border border-red-500/30 text-red-400 font-semibold py-2.5 rounded-lg text-sm hover:bg-red-500/30">Delete</button>
+                <button onclick="closeDeleteModal()" class="flex-1 border border-white/10 text-neutral-300 font-medium py-2.5 rounded-lg text-sm hover:bg-white/5">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="admin.js"></script>
+</body>
+</html>

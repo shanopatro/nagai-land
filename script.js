@@ -1258,14 +1258,14 @@ function openPropertyDetail(id) {
         '        <i data-lucide="square" style="width:16px;height:16px"></i>' +
         "        <div>" +
         '          <div class="detail-info-label">Square Feet</div>' +
-        '          <div class="detail-info-value">' + area.sqFeet.toLocaleString("en-IN") + " sq.ft</div>' +
+        '          <div class="detail-info-value">' + area.sqFeet.toLocaleString("en-IN") + " sq.ft</div>" +
         "        </div>" +
         "      </div>" +
         '      <div class="detail-info-chip">' +
         '        <i data-lucide="grid-3x3" style="width:16px;height:16px"></i>' +
         "        <div>" +
         '          <div class="detail-info-label">Acres</div>' +
-        '          <div class="detail-info-value">' + area.acres + " acres</div>' +
+        '          <div class="detail-info-value">' + area.acres + " acres</div>" +
         "        </div>" +
         "      </div>" +
         "    </div>" +

@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>நாகப்பட்டினம் நிலம் - Land Buy & Sale | Nagapattinam District</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        body { background: #050505; color: #e5e5e5; }
+        ::selection { background: #00ffc4; color: #000; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #262626; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #404040; }
+
+        @keyframes slideInUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0,255,196,0.1); }
+            50% { box-shadow: 0 0 40px rgba(0,255,196,0.25); }
+        }
+        @keyframes count-up {
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .animate-in { animation: slideInUp 0.6s ease-out forwards; opacity: 0; }
+        .delay-1 { animation-delay: 0.15s; }
+        .delay-2 { animation-delay: 0.3s; }
+        .delay-3 { animation-delay: 0.45s; }
+        .delay-4 { animation-delay: 0.6s; }
+        .delay-5 { animation-delay: 0.75s; }
+
+        .text-gradient {
+            background: linear-gradient(to bottom, #fff, rgba(255,255,255,0.9), rgba(255,255,255,0.5));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .text-gradient-accent {
+            background: linear-gradient(135deg, #00ffc4, #047857);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .btn-primary {
+            background: linear-gradient(to right, #047857, #059669);
+            box-shadow: 0 0 25px rgba(4,120,87,0.4);
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 0 40px rgba(4,120,87,0.7);
+            transform: translateY(-1px);
+        }
+        .card-hover {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 0 60px rgba(0,255,196,0.12);
+            border-color: rgba(0,255,196,0.2);
+        }
+        .glow-border {
+            position: relative;
+        }
+        .glow-border::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: inherit;
+            background: linear-gradient(135deg, #00ffc4, transparent, #00ffc4);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        .glow-border:hover::before { opacity: 0.5; }
+
+        .modal-overlay {
+            backdrop-filter: blur(12px);
+            background: rgba(0,0,0,0.75);
+        }
+        .grid-bg {
+            background-image: linear-gradient(to right, rgba(128,128,128,0.02) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(128,128,128,0.02) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        .taluk-card {
+            transition: all 0.4s;
+            cursor: pointer;
+        }
+        .taluk-card:hover {
+            background: rgba(0,255,196,0.05);
+            border-color: rgba(0,255,196,0.3);
+            transform: scale(1.03);
+        }
+        .taluk-card.active {
+            background: rgba(0,255,196,0.08);
+            border-color: #00ffc4;
+        }
+        .village-chip {
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .village-chip:hover, .village-chip.active {
+            background: rgba(0,255,196,0.15);
+            border-color: #00ffc4;
+            color: #00ffc4;
+        }
+        .property-tag {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        input, select, textarea {
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: #00ffc4 !important;
+            box-shadow: 0 0 0 3px rgba(0,255,196,0.1) !important;
+            outline: none;
+        }
+        .tab-btn { transition: all 0.3s; }
+        .tab-btn.active {
+            color: #00ffc4;
+            border-color: #00ffc4;
+        }
+        .toast {
+            animation: slideInUp 0.4s ease-out forwards;
+        }
+        .hero-stat {
+            animation: count-up 0.6s ease-out forwards;
+        }
+        .img-overlay {
+            background: linear-gradient(to top, rgba(5,5,5,0.95) 0%, rgba(5,5,5,0.4) 50%, transparent 100%);
+        }
+        .status-sale { background: rgba(0,255,196,0.15); color: #00ffc4; }
+        .status-rent { background: rgba(96,165,250,0.15); color: #60a5fa; }
+        .status-urgent { background: rgba(239,68,68,0.15); color: #ef4444; }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.5rem !important; }
+        }
+    </style>
+</head>
+<body class="grid-bg">
+
+<!-- Toast Container -->
+<div id="toastContainer" class="fixed top-6 right-6 z-[100] flex flex-col gap-3"></div>
+
+<!-- Navigation -->
+<nav class="sticky top-0 z-50 bg-[#050505]/85 backdrop-blur-md border-b border-white/5">
+    <div class="max-w-[1400px] mx-auto px-5 py-4 flex items-center justify-between">
+        <a href="#" class="flex items-center gap-3 group" onclick="showSection('home')">
+            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-[#047857] to-[#059669] flex items-center justify-center shadow-lg" style="box-shadow: 0 0 15px rgba(4,120,87,0.5);">
+                <i data-lucide="landmark" class="w-5 h-5 text-white"></i>
+            </div>
+            <div>
+                <span class="text-lg font-bold text-white tracking-tight">நாகை நிலம்</span>
+                <span class="hidden sm:block text-[10px] text-neutral-500 tracking-widest uppercase">Nagapattinam Land Portal</span>
+            </div>
+        </a>
+
+        <!-- Desktop Nav -->
+        <div class="hidden lg:flex items-center gap-8">
+            <a href="#" onclick="showSection('home')" class="text-sm text-neutral-400 hover:text-[#00ffc4] transition-colors">Home</a>
+            <a href="#" onclick="showSection('listings')" class="text-sm text-neutral-400 hover:text-[#00ffc4] transition-colors">All Listings</a>
+            <a href="#" onclick="showSection('villages')" class="text-sm text-neutral-400 hover:text-[#00ffc4] transition-colors">Villages & Cities</a>
+            <a href="#" onclick="openModal('addProperty')" class="text-sm text-neutral-400 hover:text-[#00ffc4] transition-colors">Sell Land</a>
+            <a href="#" onclick="showSection('contact')" class="text-sm text-neutral-400 hover:text-[#00ffc4] transition-colors">Contact</a>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <button onclick="openModal('addProperty')" class="hidden sm:flex btn-primary text-sm font-semibold text-white px-5 py-2.5 rounded-lg items-center gap-2">
+                <i data-lucide="plus" class="w-4 h-4"></i> Post Ad
+            </button>
+            <button onclick="toggleMobileMenu()" class="lg:hidden p-2 rounded-lg border border-white/10 hover:border-white/20 transition-colors">
+                <i data-lucide="menu" class="w-5 h-5 text-neutral-300" id="menuIcon"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden lg:hidden border-t border-white/5 bg-[#0a0a0a]/95 backdrop-blur-md">
+        <div class="px-5 py-4 flex flex-col gap-3">
+            <a href="#" onclick="showSection('home');toggleMobileMenu()" class="text-sm text-neutral-300 py-2 px-3 rounded-lg hover:bg-white/5 transition-colors">🏠 Home</a>
+            <a href="#" onclick="showSection('listings');toggleMobileMenu()" class="text-sm text-neutral-300 py-2 px-3 rounded-lg hover:bg-white/5 transition-colors">📋 All Listings</a>
+            <a href="#" onclick="showSection('villages');toggleMobileMenu()" class="text-sm text-neutral-300 py-2 px-3 rounded-lg hover:bg-white/5 transition-colors">🏘️ Villages & Cities</a>
+            <a href="#" onclick="openModal('addProperty');toggleMobileMenu()" class="text-sm text-neutral-300 py-2 px-3 rounded-lg hover:bg-white/5 transition-colors">📌 Sell Your Land</a>
+            <a href="#" onclick="showSection('contact');toggleMobileMenu()" class="text-sm text-neutral-300 py-2 px-3 rounded-lg hover:bg-white/5 transition-colors">📞 Contact Us</a>
+            <button onclick="openModal('addProperty');toggleMobileMenu()" class="btn-primary text-sm font-semibold text-white px-5 py-3 rounded-lg mt-2">
+                + Post Your Land Ad
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- ==================== HOME SECTION ==================== -->
+<section id="section-home">
+
+    <!-- Hero -->
+    <div class="relative overflow-hidden">
+        <div class="absolute inset-0">
+            <img src="https://picsum.photos/seed/nagapattinam-land-green/1920/1080.jpg" alt="Nagapattinam Land" class="w-full h-full object-cover opacity-30">
+            <div class="absolute inset-0 bg-gradient-to-b from-[#050505] via-[#050505]/70 to-[#050505]"></div>
+        </div>
+
+        <div class="relative max-w-[1400px] mx-auto px-5 pt-20 pb-28 md:pt-28 md:pb-36">
+            <div class="max-w-4xl">
+                <div class="animate-in inline-flex items-center gap-2 bg-[#00ffc4]/10 border border-[#00ffc4]/20 rounded-full px-4 py-1.5 mb-6">
+                    <span class="w-2 h-2 rounded-full bg-[#00ffc4] animate-pulse"></span>
+                    <span class="text-xs font-semibold text-[#00ffc4] tracking-wider uppercase">Nagapattinam District</span>
+                </div>
+
+                <h1 class="hero-title text-5xl md:text-7xl font-semibold leading-[1.05] tracking-tight mb-6 animate-in delay-1">
+                    <span class="text-gradient">Buy & Sell</span><br>
+                    <span class="text-gradient-accent">Land in Nagapattinam</span>
+                </h1>
+
+                <p class="text-lg md:text-xl text-neutral-400 leading-relaxed max-w-2xl mb-10 animate-in delay-2">
+                    நாகப்பட்டினம் மாவட்டத்தின் அனைத்து கிராமங்கள் மற்றும் நகரங்களிலும் உள்ள நிலங்களை வாங்கவும் விற்கவும். Find agricultural land, residential plots, commercial land across all taluks.
+                </p>
+
+                <!-- Stats -->
+                <div class="flex flex-wrap gap-8 mb-12 animate-in delay-3">
+                    <div class="hero-stat">
+                        <div class="text-3xl font-bold text-white" id="statListings">0</div>
+                        <div class="text-xs text-neutral-500 tracking-wider uppercase mt-1">Active Listings</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="text-3xl font-bold text-white" id="statVillages">0</div>
+                        <div class="text-xs text-neutral-500 tracking-wider uppercase mt-1">Villages Covered</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="text-3xl font-bold text-white" id="statTaluk">4</div>
+                        <div class="text-xs text-neutral-500 tracking-wider uppercase mt-1">Taluks</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="text-3xl font-bold text-white" id="statDeals">0</div>
+                        <div class="text-xs text-neutral-500 tracking-wider uppercase mt-1">Deals Completed</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Box -->
+            <div class="max-w-5xl animate-in delay-4">
+                <div class="bg-[#0a0a0a]/90 backdrop-blur-md border border-white/10 rounded-2xl p-5 md:p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div>
+                            <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-2 block">Taluk</label>
+                            <select id="searchTaluk" onchange="updateVillages()" class="w-full bg-[#111] border border-white/10 rounded-lg px-4 py-3 text-sm text-neutral-200">
+                                <option value="">All Taluks</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-2 block">Village / City</label>
+                            <select id="searchVillage" class="w-full bg-[#111] border border-white/10 rounded-lg px-4 py-3 text-sm text-neutral-200">
+                                <option value="">All Villages</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-2 block">Land Type</label>
+                            <select id="searchType" class="w-full bg-[#111] border border-white/10 rounded-lg px-4 py-3 text-sm text-neutral-200">
+                                <option value="">All Types</option>
+                                <option value="agricultural">Agricultural Land</option>
+                                <option value="residential">Residential Plot</option>
+                                <option value="commercial">Commercial Land</option>
+                                <option value="industrial">Industrial Land</option>
+                                <option value="house">House with Land</option>
+                                <option value="farmhouse">Farm House</option>
+                            </select>
+                        </div>
+                        <div class="flex items-end">
+                            <button onclick="searchProperties()" class="w-full btn-primary text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2">
+                                <i data-lucide="search" class="w-4 h-4"></i> Search
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-3 mt-4 pt-4 border-t border-white/5">
+                        <span class="text-[10px] text-neutral-500 tracking-wider uppercase self-center mr-1">Quick:</span>
+                        <button onclick="quickSearch('agricultural')" class="text-xs text-neutral-400 border border-white/10 rounded-full px-3 py-1 hover:border-[#00ffc4]/30 hover:text-[#00ffc4] transition-all">விவசாய நிலம்</button>
+                        <button onclick="quickSearch('residential')" class="text-xs text-neutral-400 border border-white/10 rounded-full px-3 py-1 hover:border-[#00ffc4]/30 hover:text-[#00ffc4] transition-all">குடியிருப்பு நிலம்</button>
+                        <button onclick="quickSearch('commercial')" class="text-xs text-neutral-400 border border-white/10 rounded-full px-3 py-1 hover:border-[#00ffc4]/30 hover:text-[#00ffc4] transition-all">வணிக நிலம்</button>
+                        <button onclick="quickSearch('house')" class="text-xs text-neutral-400 border border-white/10 rounded-full px-3 py-1 hover:border-[#00ffc4]/30 hover:text-[#00ffc4] transition-all">வீடு மனை</button>
+                        <button onclick="quickSearch('under5L')" class="text-xs text-neutral-400 border border-white/10 rounded-full px-3 py-1 hover:border-[#00ffc4]/30 hover:text-[#00ffc4] transition-all">₹5 லட்சத்திற்கு கீழே</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Taluks Overview -->
+    <div class="max-w-[1400px] mx-auto px-5 py-20">
+        <div class="text-center mb-14 animate-in">
+            <span class="text-[10px] font-bold text-[#00ffc4] tracking-[0.2em] uppercase">Browse by Taluk</span>
+            <h2 class="text-4xl md:text-5xl font-semibold tracking-tight mt-3 text-gradient">4 Taluks, 400+ Villages</h2>
+            <p class="text-neutral-400 mt-4 max-w-xl mx-auto">Nagapattinam district covers 4 revenue taluks with hundreds of villages. Select a taluk to explore available lands.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" id="taluksGrid">
+        </div>
+    </div>
+
+    <!-- Featured Listings -->
+    <div class="max-w-[1400px] mx-auto px-5 py-16">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
+            <div>
+                <span class="text-[10px] font-bold text-[#00ffc4] tracking-[0.2em] uppercase">Featured Properties</span>
+                <h2 class="text-3xl md:text-4xl font-semibold tracking-tight mt-2 text-gradient">Latest Listings</h2>
+            </div>
+            <button onclick="showSection('listings')" class="text-sm text-[#00ffc4] flex items-center gap-1 hover:gap-2 transition-all">
+                View All Listings <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="featuredGrid">
+        </div>
+    </div>
+
+    <!-- How It Works -->
+    <div class="max-w-[1400px] mx-auto px-5 py-20">
+        <div class="text-center mb-14">
+            <span class="text-[10px] font-bold text-[#00ffc4] tracking-[0.2em] uppercase">Simple Process</span>
+            <h2 class="text-3xl md:text-4xl font-semibold tracking-tight mt-3 text-gradient">How It Works</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="text-center p-8 rounded-xl border border-white/5 bg-[#0a0a0a]/50 card-hover">
+                <div class="w-16 h-16 rounded-2xl bg-[#047857]/10 border border-[#047857]/20 flex items-center justify-center mx-auto mb-5">
+                    <i data-lucide="upload" class="w-7 h-7 text-[#00ffc4]"></i>
+                </div>
+                <div class="text-[10px] font-bold text-[#00ffc4] tracking-widest uppercase mb-2">Step 01</div>
+                <h3 class="text-xl font-semibold text-white mb-3">Post Your Ad</h3>
+                <p class="text-sm text-neutral-400 leading-relaxed">உங்கள் நிலத்தின் விவரங்கள், புகைப்படங்கள், விலை போன்றவற்றை பதிவு செய்யுங்கள்.</p>
+            </div>
+            <div class="text-center p-8 rounded-xl border border-white/5 bg-[#0a0a0a]/50 card-hover">
+                <div class="w-16 h-16 rounded-2xl bg-[#047857]/10 border border-[#047857]/20 flex items-center justify-center mx-auto mb-5">
+                    <i data-lucide="users" class="w-7 h-7 text-[#00ffc4]"></i>
+                </div>
+                <div class="text-[10px] font-bold text-[#00ffc4] tracking-widest uppercase mb-2">Step 02</div>
+                <h3 class="text-xl font-semibold text-white mb-3">Connect with Buyers</h3>
+                <p class="text-sm text-neutral-400 leading-relaxed">வாடிக்கையாளர்கள் நேரடியாக உங்களைத் தொடர்பு கொள்வார்கள்.</p>
+            </div>
+            <div class="text-center p-8 rounded-xl border border-white/5 bg-[#0a0a0a]/50 card-hover">
+                <div class="w-16 h-16 rounded-2xl bg-[#047857]/10 border border-[#047857]/20 flex items-center justify-center mx-auto mb-5">
+                    <i data-lucide="handshake" class="w-7 h-7 text-[#00ffc4]"></i>
+                </div>
+                <div class="text-[10px] font-bold text-[#00ffc4] tracking-widest uppercase mb-2">Step 03</div>
+                <h3 class="text-xl font-semibold text-white mb-3">Close the Deal</h3>
+                <p class="text-sm text-neutral-400 leading-relaxed">நேரடியாக சந்தித்து பேசி, பத்திரமாக ஒப்பந்தம் செய்யுங்கள்.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== LISTINGS SECTION ==================== -->
+<section id="section-listings" class="hidden">
+    <div class="max-w-[1400px] mx-auto px-5 py-12">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+            <div>
+                <span class="text-[10px] font-bold text-[#00ffc4] tracking-[0.2em] uppercase">All Properties</span>
+                <h2 class="text-3xl md:text-4xl font-semibold tracking-tight mt-2 text-gradient">Land Listings</h2>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="text-sm text-neutral-400" id="listingCount">0 properties found</span>
+                <select id="sortOrder" onchange="renderListings()" class="bg-[#111] border border-white/10 rounded-lg px-3 py-2 text-xs text-neutral-300">
+                    <option value="newest">Newest First</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="area-large">Area: Largest First</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="bg-[#0a0a0a] border border-white/5 rounded-xl p-5 mb-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
+                <div>
+                    <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1.5 block">Taluk</label>
+                    <select id="filterTaluk" onchange="filterListings()" class="w-full bg-[#111] border border-white/10 rounded-lg px-3 py-2.5 text-sm text-neutral-200">
+                        <option value="">All</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1.5 block">Village</label>
+                    <select id="filterVillage" onchange="filterListings()" class="w-full bg-[#111] border border-white/10 rounded-lg px-3 py-2.5 text-sm text-neutral-200">
+                        <option value="">All</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1.5 block">Type</label>
+                    <select id="filterType" onchange="filterListings()" class="w-full bg-[#111] border border-white/10 rounded-lg px-3 py-2.5 text-sm text-neutral-200">
+                        <option value="">All Types</option>
+                        <option value="agricultural">Agricultural</option>
+                        <option value="residential">Residential</option>
+                        <option value="commercial">Commercial</option>
+                        <option value="industrial">Industrial</option>
+                        <option value="house">House with Land</option>
+                        <option value="farmhouse">Farm House</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1.5 block">Min Price (₹)</label>
+                    <input type="text" id="filterMinPrice" placeholder="e.g. 100000" onchange="filterListings()" class="w-full bg-[#111] border border-white/10 rounded-lg px-3 py-2.5 text-sm text-neutral-200">
+                </div>
+                <div>
+                    <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1.5 block">Max Price (₹)</label>
+                    <input type="text" id="filterMaxPrice" placeholder="e.g. 5000000" onchange="filterListings()" class="w-full bg-[#111] border border-white/10 rounded-lg px-3 py-2.5 text-sm text-neutral-200">
+                </div>
+            </div>
+            <button onclick="clearFilters()" class="mt-3 text-xs text-neutral-500 hover:text-[#00ffc4] transition-colors flex items-center gap-1">
+                <i data-lucide="x" class="w-3 h-3"></i> Clear All Filters
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="allListingsGrid">
+        </div>
+        <div id="noResults" class="hidden text-center py-20">
+            <i data-lucide="search-x" class="w-16 h-16 text-neutral-700 mx-auto mb-4"></i>
+            <p class="text-xl font-semibold text-neutral-400">No properties found</p>
+            <p class="text-sm text-neutral-600 mt-2">Try changing your filters or search criteria</p>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== VILLAGES SECTION ==================== -->
+<section id="section-villages" class="hidden">
+    <div class="max-w-[1400px] mx-auto px-5 py-12">
+        <div class="text-center mb-12">
+            <span class="text-[10px] font-bold text-[#00ffc4] tracking-[0.2em] uppercase">Complete Directory</span>
+            <h2 class="text-3xl md:text-5xl font-semibold tracking-tight mt-3 text-gradient">Villages & Cities</h2>
+            <p class="text-neutral-400 mt-4 max-w-2xl mx-auto">Nagapattinam district consists of 4 taluks. Click on a taluk to see all villages and available land listings.</p>
+        </div>
+
+        <!-- Taluk Tabs -->
+        <div class="flex flex-wrap justify-center gap-3 mb-10" id="villageTalukTabs"></div>
+
+        <!-- Village Grid -->
+        <div id="villageListContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+        </div>
+
+        <!-- Village Properties -->
+        <div id="villageProperties" class="hidden mt-12">
+            <h3 class="text-2xl font-semibold text-white mb-6" id="villagePropTitle"></h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="villagePropGrid"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CONTACT SECTION ==================== -->
+<section id="section-contact" class="hidden">
+    <div class="max-w-[1400px] mx-auto px-5 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            <div>
+                <span class="text-[10px] font-bold text-[#00ffc4] tracking-[0.2em] uppercase">Get in Touch</span>
+                <h2 class="text-4xl md:text-5xl font-semibold tracking-tight mt-3 text-gradient mb-6">Contact Us</h2>
+                <p class="text-neutral-400 leading-relaxed mb-10">நில வாங்குதல், விற்பனை தொடர்பான எந்த கேள்விகளுக்கும் எங்களைத் தொடர்பு கொள்ளுங்கள்.</p>
+
+                <div class="space-y-6">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-[#047857]/10 border border-[#047857]/20 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="map-pin" class="w-5 h-5 text-[#00ffc4]"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-semibold text-white mb-1">Office Address</h4>
+                            <p class="text-sm text-neutral-400">No. 42, Main Road, Near Bus Stand,<br>Nagapattinam - 611001, Tamil Nadu</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-[#047857]/10 border border-[#047857]/20 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="phone" class="w-5 h-5 text-[#00ffc4]"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-semibold text-white mb-1">Phone</h4>
+                            <p class="text-sm text-neutral-400">+91 98765 43210<br>+91 4365 223 456</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-[#047857]/10 border border-[#047857]/20 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="mail" class="w-5 h-5 text-[#00ffc4]"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-semibold text-white mb-1">Email</h4>
+                            <p class="text-sm text-neutral-400">info@nagailand.com<br>support@nagailand.com</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-[#047857]/10 border border-[#047857]/20 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="clock" class="w-5 h-5 text-[#00ffc4]"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-semibold text-white mb-1">Working Hours</h4>
+                            <p class="text-sm text-neutral-400">Monday - Saturday: 9:00 AM - 6:00 PM<br>Sunday: Closed</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8">
+                <h3 class="text-xl font-semibold text-white mb-6">Send a Message</h3>
+                <form onsubmit="submitContact(event)" class="space-y-5">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1.5 block">Name *</label>
+                            <input type="text" required placeholder="Your name" class="w-full bg-[#111] border border-white/10 rounded-lg px-4 py-3 text-sm text-neutral-200">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1.5 block">Phone *</label>
+                            <input type="tel" required placeholder="+91 XXXXX XXXXX" class="w-full bg-[#111] border border-white/10 rounded-lg px-4 py-3 text-sm text-neutral-200">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1.5 block">Email</label>
+                        <input type="email" placeholder="your@email.com" class="w-full bg-[#111] border border-white/10 rounded-lg px-4 py-3 text-sm text-neutral-200">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1.5 block">Subject</label>
+                        <select class="w-full bg-[#111] border border-white/10 rounded-lg px-4 py-3 text-sm text-neutral-200">
+                            <option>Buy Land Inquiry</option>
+                            <option>Sell Land Inquiry</option>
+                            <option>Legal Help</option>
+                            <option>Valuation Request</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1.5 block">Message *</label>
+                        <textarea required rows="4" placeholder="உங்கள் செய்தியை இங்கே எழுதுங்கள்..." class="w-full bg-[#111] border border-white/10 rounded-lg px-4 py-3 text-sm text-neutral-200 resize-none"></textarea>
+                    </div>
+                    <button type="submit" class="w-full btn-primary text-white font-semibold py-3.5 rounded-lg flex items-center justify-center gap-2">
+                        <i data-lucide="send" class="w-4 h-4"></i> Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== ADD PROPERTY MODAL ==================== -->
+<div id="modal-addProperty" class="hidden fixed inset-0 z-[90] modal-overlay flex items-start justify-center pt-10 pb-10 overflow-y-auto">
+    <div class="bg-[#0a0a0a] border border-white/10 rounded-2xl w-full max-w-3xl mx-5 my-auto relative" style="animation: slideInUp 0.4s ease-out">
+        <div class="sticky top-0 bg-[#0a0a0a] border-b border-white/5 px-8 py-5 rounded-t-2xl flex items-center justify-between z-10">
+            <div>
+                <h3 class="text-xl font-semibold text-white">Post Your Land Ad</h3>
+                <p class="text-xs text-neutral-500 mt-1">உங்கள் நிலத்தை இலவசமாக பதிவு செய்யுங்கள்</p>
+            </div>
+            <button onclick="closeModal('addProperty')" class="p-2 rounded-lg border border-white/10 hover:border-white/20 hover:bg-white/5 transition-all">
+                <i data-lucide="x" class="w-5 h-5 text-neutral-400"></i>
+            </button>
+        </div>
+
+        <form onsubmit="submitProperty(event)" class="p-8 space-y-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                    <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1.5 block">Your Name *</label>
+                    <input type="text" id="propName" required placeholder="உங்கள் பெயர்" class="w-full bg-[#111] border border-white/10 rounded-lg px-4 py-3 text-sm text-neutral-200">
+                </div>
+                <div>
+                    <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1.5 block">Phone Number *</label>
+                    <input type="tel" id="propPhone" required placeholder="+91 XXXXX XXXXX" class="w-full bg-[#111] border border-white/10 rounded-lg px-4 py-3 text-sm text-neutral-200">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                    <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1.5 block">Taluk *</label>
+                    <select id="propTaluk" required onchange="updatePropVillages()" class="w-full bg-[#111] border border-white/10 rounded-lg px-4 py-3 text-sm text-neutral-200">
+                        <option value="">Select Taluk</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1.5 block">Village / City *</label>
+                    <select id="propVillage" required class="w-full bg-[#111] border border-white/10 rounded-lg px-4 py-3 text-sm text-neutral-200">
+                        <option value="">Select Village</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                <div>
+                    <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1.5 block">Land Type *</label>
+                    <select id="propType" required class="w-full bg-[#111] border border-white/10 rounded-lg px-4 py-3 text-sm text-neutral-200">
+                        <option value="">Select Type</option>
+                        <option value="agricultural">Agricultural Land</option>
+                        <option value="residential">Residential Plot</option>
+                        <option value="commercial">Commercial Land</option>
+                        <option value="industrial">Industrial Land</option>
+                        <option value="house">House with Land</option>
+                        <option value="farmhouse">Farm House</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1.5 block">Area (cents) *</label>
+                    <input type="number" id="propArea" required placeholder="e.g. 100" class="w-full bg-[#111] border border-white/10 rounded-lg px-4 py-3 text-sm text-neutral-200">
+                </div>
+                <div>
+                    <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1.5 block">Price (₹) *</label>
+                    <input type="number" id="propPrice" required placeholder="e.g. 500000" class="w-full bg-[#111] border border-white/10 rounded-lg px-4 py-3 text-sm text-neutral-200">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                    <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1.5 block">Road Access</label>
+                    <select id="propRoad" class="w-full bg-[#111] border border-white/10 rounded-lg px-4 py-3 text-sm text-neutral-200">
+                        <option value="">Select</option>
+                        <option value="tar-road">Tar Road</option>
+                        <option value="gravel-road">Gravel Road</option>
+                        <option value="no-road">No Road Access</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1.5 block">Water Source</label>
+                    <select id="propWater" class="w-full bg-[#111] border border-white/10 rounded-lg px-4 py-3 text-sm text-neutral-200">
+                        <option value="">Select</option>
+                        <option value="borewell">Borewell</option>
+                        <option value="well">Open Well</option>
+                        <option value="canal">Canal</option>
+                        <option value="river">River</option>
+                        <option value="none">None</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1.5 block">Description (Tamil or English)</label>
+                <textarea id="propDesc" rows="4" placeholder="நிலத்தின் விவரங்களை எழுதுங்கள்... (அருகில் உள்ள இடங்கள், வசதிகள், ஆவணங்கள் பற்றி)" class="w-full bg-[#111] border border-white/10 rounded-lg px-4 py-3 text-sm text-neutral-200 resize-none"></textarea>
+            </div>
+
+            <div>
+                <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1.5 block">Survey Number / Patta Number</label>
+                <input type="text" id="propSurvey" placeholder="e.g. 125/3A" class="w-full bg-[#111] border border-white/10 rounded-lg px-4 py-3 text-sm text-neutral-200">
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 pt-2">
+                <button type="submit" class="flex-1 btn-primary text-white font-semibold py-3.5 rounded-lg flex items-center justify-center gap-2">
+                    <i data-lucide="check-circle" class="w-4 h-4"></i> Submit Ad
+                </button>
+                <button type="button" onclick="closeModal('addProperty')" class="flex-1 border border-white/10 text-neutral-300 font-medium py-3.5 rounded-lg hover:bg-white/5 transition-colors">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ==================== PROPERTY DETAIL MODAL ==================== -->
+<div id="modal-propertyDetail" class="hidden fixed inset-0 z-[90] modal-overlay flex items-start justify-center pt-10 pb-10 overflow-y-auto">
+    <div class="bg-[#0a0a0a] border border-white/10 rounded-2xl w-full max-w-3xl mx-5 my-auto relative" style="animation: slideInUp 0.4s ease-out">
+        <div id="propertyDetailContent"></div>
+    </div>
+</div>
+
+<!-- ==================== INQUIRY MODAL ==================== -->
+<div id="modal-inquiry" class="hidden fixed inset-0 z-[95] modal-overlay flex items-center justify-center p-5">
+    <div class="bg-[#0a0a0a] border border-white/10 rounded-2xl w-full max-w-md relative" style="animation: slideInUp 0.3s ease-out">
+        <div class="px-8 py-5 border-b border-white/5 flex items-center justify-between">
+            <h3 class="text-lg font-semibold text-white">Send Inquiry</h3>
+            <button onclick="closeModal('inquiry')" class="p-2 rounded-lg border border-white/10 hover:bg-white/5 transition-all">
+                <i data-lucide="x" class="w-4 h-4 text-neutral-400"></i>
+            </button>
+        </div>
+        <form onsubmit="submitInquiry(event)" class="p-8 space-y-4">
+            <input type="hidden" id="inquiryPropId">
+            <div>
+                <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1.5 block">Your Name *</label>
+                <input type="text" required placeholder="Name" class="w-full bg-[#111] border border-white/10 rounded-lg px-4 py-3 text-sm text-neutral-200">
+            </div>
+            <div>
+                <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1.5 block">Phone *</label>
+                <input type="tel" required placeholder="+91 XXXXX XXXXX" class="w-full bg-[#111] border border-white/10 rounded-lg px-4 py-3 text-sm text-neutral-200">
+            </div>
+            <div>
+                <label class="text-[10px] font-bold text-neutral-500 tracking-widest uppercase mb-1.5 block">Message</label>
+                <textarea rows="3" placeholder="I'm interested in this property..." class="w-full bg-[#111] border border-white/10 rounded-lg px-4 py-3 text-sm text-neutral-200 resize-none"></textarea>
+            </div>
+            <button type="submit" class="w-full btn-primary text-white font-semibold py-3 rounded-lg">Send Inquiry</button>
+        </form>
+    </div>
+</div>
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="border-t border-white/5 mt-10">
+    <div class="max-w-[1400px] mx-auto px-5 py-16">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
+            <div>
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-[#047857] to-[#059669] flex items-center justify-center">
+                        <i data-lucide="landmark" class="w-4 h-4 text-white"></i>
+                    </div>
+                    <span class="text-lg font-bold text-white">நாகை நிலம்</span>
+                </div>
+                <p class="text-sm text-neutral-500 leading-relaxed mb-5">Nagapattinam district's leading land buy and sale platform. Connecting buyers and sellers across all villages and taluks.</p>
+                <div class="flex gap-3">
+                    <a href="#" class="w-9 h-9 rounded-lg border border-white/10 flex items-center justify-center hover:border-[#00ffc4]/30 hover:text-[#00ffc4] text-neutral-500 transition-all">
+                        <i data-lucide="facebook" class="w-4 h-4"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 rounded-lg border border-white/10 flex items-center justify-center hover:border-[#00ffc4]/30 hover:text-[#00ffc4] text-neutral-500 transition-all">
+                        <i data-lucide="instagram" class="w-4 h-4"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 rounded-lg border border-white/10 flex items-center justify-center hover:border-[#00ffc4]/30 hover:text-[#00ffc4] text-neutral-500 transition-all">
+                        <i data-lucide="youtube" class="w-4 h-4"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 rounded-lg border border-white/10 flex items-center justify-center hover:border-[#00ffc4]/30 hover:text-[#00ffc4] text-neutral-500 transition-all">
+                        <i data-lucide="phone" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white mb-5 tracking-wide">Quick Links</h4>
+                <ul class="space-y-3">
+                    <li><a href="#" onclick="showSection('home')" class="text-sm text-neutral-500 hover:text-[#00ffc4] transition-colors">Home</a></li>
+                    <li><a href="#" onclick="showSection('listings')" class="text-sm text-neutral-500 hover:text-[#00ffc4] transition-colors">All Listings</a></li>
+                    <li><a href="#" onclick="showSection('villages')" class="text-sm text-neutral-500 hover:text-[#00ffc4] transition-colors">Villages Directory</a></li>
+                    <li><a href="#" onclick="openModal('addProperty')" class="text-sm text-neutral-500 hover:text-[#00ffc4] transition-colors">Post Ad Free</a></li>
+                    <li><a href="#" onclick="showSection('contact')" class="text-sm text-neutral-500 hover:text-[#00ffc4] transition-colors">Contact Us</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white mb-5 tracking-wide">Taluk wise</h4>
+                <ul class="space-y-3" id="footerTaluks"></ul>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white mb-5 tracking-wide">Land Types</h4>
+                <ul class="space-y-3">
+                    <li><a href="#" onclick="quickSearch('agricultural');showSection('listings')" class="text-sm text-neutral-500 hover:text-[#00ffc4] transition-colors">விவசாய நிலம்</a></li>
+                    <li><a href="#" onclick="quickSearch('residential');showSection('listings')" class="text-sm text-neutral-500 hover:text-[#00ffc4] transition-colors">குடியிருப்பு மனை</a></li>
+                    <li><a href="#" onclick="quickSearch('commercial');showSection('listings')" class="text-sm text-neutral-500 hover:text-[#00ffc4] transition-colors">வணிக நிலம்</a></li>
+                    <li><a href="#" onclick="quickSearch('house');showSection('listings')" class="text-sm text-neutral-500 hover:text-[#00ffc4] transition-colors">வீடு மனை</a></li>
+                    <li><a href="#" onclick="quickSearch('farmhouse');showSection('listings')" class="text-sm text-neutral-500 hover:text-[#00ffc4] transition-colors">பண்ணை வீடு</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-white/5 mt-12 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p class="text-xs text-neutral-600">© 2025 நாகை நிலம் (Nagai Nilam). All rights reserved.</p>
+            <p class="text-xs text-neutral-600">Nagapattinam District, Tamil Nadu, India</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+// ==================== DATA ====================
+
+const talukData = {
+    "Nagapattinam": {
+        description: "District headquarters, coastal town with ancient temples",
+        villages: [
+            "Nagapattinam", "Akkaraipettai", "Kameswaram", "Koothur", "Poompuhar",
+            "Keechankuppam", "Nambiyar Nagar", "Vannankulam", "Thirukkuvalai",
+            "Palliyagudi", "Sembanarkoil", "Vanagiri", "Kadalur", "Pudhukudi",
+            "Manjalmedu", "Nagore", "Sikkal", "Velayuthampalayam", "Thiruvengadu",
+            "Piravam", "Korukkupet", "Ammanpettai", "Mangaimadam", "Elanthakudi",
+            "Kollidam", "Thiruvalangadu", "Kodiyakkarai", "Vedaranyam Road",
+            "Nagapattinam Port", "Ammaiyarkovil", "Thirunallar", "Vettakaranpatti",
+            "Kilaiyur", "Pandaravilai", "Melasivapuri", "Keelasivapuri", "Seruthur",
+            "Nagapattinam Rural", "Thirukkadaiyur", "Paravai", "Olaikadu",
+            "Poompuhar Beach", "Kaveripoompattinam", "Melaiyur", "Arasalar",
+            "Pannai", "Koradacheri Road", "Thalainayar", "Nachiyarkovil",
+            "Alangudi", "Pandaravadai", "Puduvayal", "Karaimedu"
+        ]
+    },
+    "Kilvelur": {
+        description: "Agricultural hub with fertile Cauvery delta lands",
+        villages: [
+            "Kilvelur", "Koradacheri", "Thirucherai", "Kivalur", "Nachiyarkovil",
+            "Pandaravadai", "Puduvayal", "Thirupugazhur", "Kizhvelur", "Maruthur",
+            "Vilangulam", "Poovalur", "Kadambadi", "Alakudi", "Kumbakonam Road",
+            "Thiruvalampozhil", "Pazhaiyur", "Sembianur", "Needamangalam",
+            "Manalmelkudi", "Thiruneelakandi", "Kodiyakkarai Road", "Vettar",
+            "Kondviduthy", "Pallathur", "Kuruvikarambai", "Pandakudi",
+            "Koothanur", "Melaalangudi", "Keelaalangudi", "Sembianmahadevi",
+            "Valangaiman", "Papanasam Road", "Thirunageswaram", "Kumbakonam",
+            "Aduthurai", "Thiruvidaimarudur", "Swamimalai", "Darasuram",
+            "Thirubuvanam", "Koradacheri East", "Koradacheri West", "Kilvelur East",
+            "Kilvelur West", "Pudhukkadai", "Karuvalarcheri", "Kothangudi",
+            "Nattrasankottai", "Vadakur", "Nannilam", "Thirunaraiyur",
+            "Elavanasur", "Koothalam", "Punnaivanam", "Annamangalam"
+        ]
+    },
+    "Thirumarugal": {
+        description: "Rich cultural heritage with ancient Shiva temples",
+        villages: [
+            "Thirumarugal", "Nannilam", "Thiruvidaimarudur", "Koothalam",
+            "Thirunageswaram", "Pazhaiyur", "Kadambadi", "Alakudi", "Sembanarkoil",
+            "Thirupunavasal", "Manalmelkudi", "Kumbakonam", "Papanasam",
+            "Thirukkadaiyur", "Thirunallar", "Needamangalam", "Valangaiman",
+            "Thiruvalampozhil", "Koradacheri", "Sembianur", "Vilangulam",
+            "Maruthur", "Poovalur", "Thirupugazhur", "Kizhvelur", "Kivalur",
+            "Pallathur", "Pandakudi", "Kuruvikarambai", "Kondviduthy",
+            "Kothangudi", "Nattrasankottai", "Vadakur", "Karuvalarcheri",
+            "Annamangalam", "Punnaivanam", "Elavanasur", "Thirunaraiyur",
+            "Koothanur", "Melaalangudi", "Keelaalangudi", "Sembianmahadevi",
+            "Thirubuvanam", "Darasuram", "Swamimalai", "Aduthurai",
+            "Pudhukkadai", "Kilvelur East", "Kilvelur West", "Koradacheri East",
+            "Koradacheri West", "Thiruneelakandi", "Manalmelkudi East",
+            "Thalainayar", "Pannai", "Arasalar", "Melaiyur"
+        ]
+    },
+    "Vedaranyam": {
+        description: "Coastal taluk with salt pans, wetlands and bird sanctuary",
+        villages: [
+            "Vedaranyam", "Kodiyakkarai", "Thalainayar", "Pathirakaliamman",
+            "Ayyampettai", "Agasthiyanpalli", "Vedaranyam Town", "Kodiyakkarai East",
+            "Kodiyakkarai West", "Point Calimere", "Muthupettai", "Puliyankandam",
+            "Thopputhurai", "Ammapattinam", "Kariyapattinam", "Servaikaranmadam",
+            "Nagooran", "Thennangudi", "Sundarapandianpatnam", "Pazhaverkadu",
+            "Vellapallam", "Koraikadu", "Mangalam", "Pudupattinam",
+            "Kaliyankadu", "Chithirangudi", "Pannaiyur", "Narikudi",
+            "Vedaranyam Coastal", "Ramnad Road", "Muthukumaranpattinam",
+            "Kadambadi Coastal", "Keezhaiyur", "Melaiyur Coastal",
+            "Poompuhar Coastal", "Nagapattinam Coastal East", "Adirampattinam",
+            "Mannargudi Road", "Muthupet Road", "Sethubhavachatram",
+            "Thiruppunavasal", "Vilundamavadi", "Palaiyur", "Kathiramangalam",
+            "Aalankulam", "Poothurai", "Nambiyar Nagar East", "Kameswaram Coastal",
+            "Akkaraipettai Coastal", "Keechankuppam Coastal", "Koothur Coastal",
+            "Vannankulam Coastal", "Palliyagudi Coastal", "Kadalur Coastal",
+            "Pudhukudi Coastal", "Manjalmedu Coastal", "Elanthakudi Coastal"
+        ]
+    }
+};
+
+const landTypes = {
+    agricultural: { label: "விவசாய நிலம்", en: "Agricultural Land", color: "#22c55e" },
+    residential: { label: "குடியிருப்பு மனை", en: "Residential Plot", color: "#3b82f6" },
+    commercial: { label: "வணிக நிலம்", en: "Commercial Land", color: "#f59e0b" },
+    industrial: { label: "தொழில் நிலம்", en: "Industrial Land", color: "#8b5cf6" },
+    house: { label: "வீடு மனை", en: "House with Land", color: "#ef4444" },
+    farmhouse: { label: "பண்ணை வீடு", en: "Farm House", color: "#06b6d4" }
+};
+
+// Sample property listings
+let properties = [
+    { id: 1, name: "Murugan", phone: "9876543210", taluk: "Nagapattinam", village: "Poompuhar", type: "agricultural", area: 200, price: 800000, road: "tar-road", water: "canal", desc: "Cauvery river nearby. Fertile land suitable for paddy cultivation. Clear title with patta. Survey No: 45/2.", survey: "45/2", date: "2025-01-15", img: "paddy-field-green" },
+    { id: 2, name: "Kumar", phone: "9876543211", taluk: "Nagapattinam", village: "Nagore", type: "residential", area: 30, price: 1500000, road: "tar-road", water: "borewell", desc: "SBT Road facing residential plot. Near school and hospital. Approved layout. Ready to construct.", survey: "120/1", date: "2025-01-14", img: "residential-plot-land" },
+    { id: 3, name: "Selvam", phone: "9876543212", taluk: "Kilvelur", village: "Koradacheri", type: "agricultural", area: 500, price: 2000000, road: "gravel-road", water: "well", desc: "Large agricultural land with open well. Two crops per year. Near Cauvery branch canal. Patta available.", survey: "78/3", date: "2025-01-13", img: "farm-land-aerial" },
+    { id: 4, name: "Raju", phone: "9876543213", taluk: "Vedaranyam", village: "Kodiyakkarai", type: "agricultural", area: 300, price: 900000, road: "gravel-road", water: "canal", desc: "Coastal area agricultural land. Salt-tolerant crops suitable. Near bird sanctuary. Good investment.", survey: "22/1", date: "2025-01-12", img: "coastal-farm-land" },
+    { id: 5, name: "Lakshmi", phone: "9876543214", taluk: "Thirumarugal", village: "Nannilam", type: "residential", area: 20, price: 1200000, road: "tar-road", water: "borewell", desc: "Town area residential plot. Main road facing. All facilities available. Near bus stand.", survey: "256/4", date: "2025-01-11", img: "town-plot-land" },
+    { id: 6, name: "Vijay", phone: "9876543215", taluk: "Nagapattinam", village: "Akkaraipettai", type: "commercial", area: 50, price: 5000000, road: "tar-road", water: "borewell", desc: "NH 32 road facing commercial land. Ideal for shops, godowns, petrol bunk. High traffic area.", survey: "89/5", date: "2025-01-10", img: "commercial-highway-land" },
+    { id: 7, name: "Devi", phone: "9876543216", taluk: "Kilvelur", village: "Thirucherai", type: "house", area: 15, price: 2500000, road: "tar-road", water: "borewell", desc: "2BHK house with 15 cents land. Newly built. Car parking. Near famous Sarangapani temple area.", survey: "145/2", date: "2025-01-09", img: "house-tamil-nadu" },
+    { id: 8, name: "Ramesh", phone: "9876543217", taluk: "Vedaranyam", village: "Vedaranyam", type: "residential", area: 40, price: 800000, road: "tar-road", water: "well", desc: "Vedaranyam town residential plot. Near market. Budget friendly. Good for investment.", survey: "310/1", date: "2025-01-08", img: "town-land-plot" },
+    { id: 9, name: "Anbu", phone: "9876543218", taluk: "Thirumarugal", village: "Thirumarugal", type: "agricultural", area: 150, price: 600000, road: "tar-road", water: "canal", desc: "Fertile delta land. Paddy, sugarcane cultivation. Road frontage on both sides. Clear documents.", survey: "67/3", date: "2025-01-07", img: "green-paddy-field" },
+    { id: 10, name: "Priya", phone: "9876543219", taluk: "Nagapattinam", village: "Kameswaram", type: "farmhouse", area: 100, price: 3500000, road: "tar-road", water: "borewell", desc: "Farm house with coconut trees, mango trees. Borewell with motor. Fence compound. Peaceful area.", survey: "98/2", date: "2025-01-06", img: "farmhouse-coconut-trees" },
+    { id: 11, name: "Senthil", phone: "9876543220", taluk: "Kilvelur", village: "Needamangalam", type: "agricultural", area: 250, price: 1200000, road: "gravel-road", water: "well", desc: "Very fertile land. Two wells. Cashew and paddy cultivated. Near main road. Patta land.", survey: "56/1", date: "2025-01-05", img: "agricultural-land-trees" },
+    { id: 12, name: "Meena", phone: "9876543221", taluk: "Vedaranyam", village: "Muthupettai", type: "agricultural", area: 400, price: 1000000, road: "no-road", water: "canal", desc: "Large wetland near Muthupettai lagoon. Shrimp farming potential. Low price. Long term investment.", survey: "33/4", date: "2025-01-04", img: "wetland-aerial-view" },
+    { id: 13, name: "Karthik", phone: "9876543222", taluk: "Nagapattinam", village: "Sikkal", type: "residential", area: 25, price: 1800000, road: "tar-road", water: "borewell", desc: "Near famous Sikkal Singaravelan temple. Residential area. Schools, shops nearby.", survey: "178/3", date: "2025-01-03", img: "temple-town-plot" },
+    { id: 14, name: "Bharathi", phone: "9876543223", taluk: "Thirumarugal", village: "Thiruvidaimarudur", type: "commercial", area: 35, price: 3000000, road: "tar-road", water: "borewell", desc: "Temple town commercial land. Tourist area. Good for hotel, lodge, shopping complex.", survey: "201/2", date: "2025-01-02", img: "temple-commercial-land" },
+    { id: 15, name: "Ganesh", phone: "9876543224", taluk: "Kilvelur", village: "Kilvelur", type: "house", area: 10, price: 1800000, road: "tar-road", water: "borewell", desc: "Newly constructed 3BHK house. Modern amenities. Kilvelur town center. Immediate sale.", survey: "89/1", date: "2025-01-01", img: "modern-house-india" },
+    { id: 16, name: "Saranya", phone: "9876543225", taluk: "Nagapattinam", village: "Thirukkuvalai", type: "agricultural", area: 180, price: 450000, road: "gravel-road", water: "canal", desc: "Budget agricultural land. Cauvery delta. Good soil. Patta available. Urgent sale.", survey: "112/3", date: "2024-12-30", img: "delta-farm-land" },
+    { id: 17, name: "Murugan", phone: "9876543226", taluk: "Vedaranyam", village: "Thalainayar", type: "agricultural", area: 350, price: 700000, road: "gravel-road", water: "river", desc: "Near Kaveri river branch. Excellent for paddy. Two sides road. Very fertile.", survey: "44/2", date: "2024-12-28", img: "river-bank-farm" },
+    { id: 18, name: "Dinesh", phone: "9876543227", taluk: "Thirumarugal", village: "Koothalam", type: "residential", area: 18, price: 650000, road: "tar-road", water: "well", desc: "Village residential plot. Budget friendly. Water facility available. Quiet area.", survey: "267/1", date: "2024-12-25", img: "village-residential-plot" }
+];
+
+let nextId = 19;
+
+// ==================== UTILITY FUNCTIONS ====================
+
+function formatPrice(num) {
+    if (num >= 10000000) return '₹' + (num / 10000000).toFixed(2) + ' Cr';
+    if (num >= 100000) return '₹' + (num / 100000).toFixed(2) + ' L';
+    return '₹' + num.toLocaleString('en-IN');
+}
+
+function formatPriceFull(num) {
+    return '₹' + num.toLocaleString('en-IN');
+}
+
+function getTypeInfo(type) {
+    return landTypes[type] || { label: type, en: type, color: "#888" };
+}
+
+function getImgUrl(seed, w, h) {
+    return `https://picsum.photos/seed/${seed}/${w}/${h}.jpg`;
+}
+
+function showToast(message, type = 'success') {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    const colors = {
+        success: 'border-[#00ffc4]/30 bg-[#00ffc4]/10',
+        error: 'border-red-500/30 bg-red-500/10',
+        info: 'border-blue-500/30 bg-blue-500/10'
+    };
+    const icons = { success: 'check-circle', error: 'alert-circle', info: 'info' };
+    const textColors = { success: 'text-[#00ffc4]', error: 'text-red-400', info: 'text-blue-400' };
+
+    toast.className = `toast flex items-center gap-3 px-5 py-3.5 rounded-xl border ${colors[type]} backdrop-blur-md min-w-[300px]`;
+    toast.innerHTML = `
+        <i data-lucide="${icons[type]}" class="w-5 h-5 ${textColors[type]} flex-shrink-0"></i>
+        <span class="text-sm text-neutral-200">${message}</span>
+    `;
+    container.appendChild(toast);
+    lucide.createIcons({ nodes: [toast] });
+
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(100px)';
+        toast.style.transition = 'all 0.3s';
+        setTimeout(() => toast.remove(), 300);
+    }, 3500);
+}
+
+// ==================== NAVIGATION ====================
+
+function showSection(name) {
+    document.querySelectorAll('[id^="section-"]').forEach(s => s.classList.add('hidden'));
+    const section = document.getElementById('section-' + name);
+    if (section) {
+        section.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    if (name === 'listings') renderListings();
+    if (name === 'villages') renderVillagesSection();
+}
+
+function toggleMobileMenu() {
+    const menu = document.getElementById('mobileMenu');
+    menu.classList.toggle('hidden');
+}
+
+// ==================== MODAL ====================
+
+function openModal(name) {
+    document.getElementById('modal-' + name).classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    if (name === 'addProperty') populatePropertyForm();
+}
+
+function closeModal(name) {
+    document.getElementById('modal-' + name).classList.add('hidden');
+    document.body.style.overflow = '';
+}
+
+// Close modal on overlay click
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('modal-overlay')) {
+        e.target.classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+});
+
+// ==================== POPULATE TALUK/VILLAGE DROPDOWNS ====================
+
+function populateDropdowns() {
+    const taluks = Object.keys(talukData);
+
+    // Search dropdown
+    const searchTaluk = document.getElementById('searchTaluk');
+    taluks.forEach(t => {
+        searchTaluk.innerHTML += `<option value="${t}">${t}</option>`;
+    });
+
+    // Filter dropdown
+    const filterTaluk = document.getElementById('filterTaluk');
+    taluks.forEach(t => {
+        filterTaluk.innerHTML += `<option value="${t}">${t}</option>`;
+    });
+
+    // Property form dropdown
+    const propTaluk = document.getElementById('propTaluk');
+    taluks.forEach(t => {
+        propTaluk.innerHTML += `<option value="${t}">${t}</option>`;
+    });
+
+    // Footer
+    const footer = document.getElementById('footerTaluks');
+    taluks.forEach(t => {
+        const count = talukData[t].villages.length;
+        footer.innerHTML += `<li><a href="#" onclick="filterByTaluk('${t}');showSection('listings')" class="text-sm text-neutral-500 hover:text-[#00ffc4] transition-colors">${t} (${count} villages)</a></li>`;
+    });
+}
+
+function updateVillages() {
+    const taluk = document.getElementById('searchTaluk').value;
+    const villageSelect = document.getElementById('searchVillage');
+    villageSelect.innerHTML = '<option value="">All Villages</option>';
+    if (taluk && talukData[taluk]) {
+        talukData[taluk].villages.forEach(v => {
+            villageSelect.innerHTML += `<option value="${v}">${v}</option>`;
+        });
+    }
+}
+
+function updateFilterVillages() {
+    const taluk = document.getElementById('filterTaluk').value;
+    const villageSelect = document.getElementById('filterVillage');
+    villageSelect.innerHTML = '<option value="">All</option>';
+    if (taluk && talukData[taluk]) {
+        talukData[taluk].villages.forEach(v => {
+            villageSelect.innerHTML += `<option value="${v}">${v}</option>`;
+        });
+    }
+}
+
+function updatePropVillages() {
+    const taluk = document.getElementById('propTaluk').value;
+    const villageSelect = document.getElementById('propVillage');
+    villageSelect.innerHTML = '<option value="">Select Village</option>';
+    if (taluk && talukData[taluk]) {
+        talukData[taluk].villages.forEach(v => {
+            villageSelect.innerHTML += `<option value="${v}">${v}</option>`;
+        });
+    }
+}
+
+function populatePropertyForm() {
+    updatePropVillages();
+}
+
+// Listen for filter taluk change
+document.getElementById('filterTaluk').addEventListener('change', updateFilterVillages);
+
+// ==================== PROPERTY CARD RENDERING ====================
+
+function createPropertyCard(prop, featured = false) {
+    const typeInfo = getTypeInfo(prop.type);
+    const imgUrl = getImgUrl(prop.img || 'land-default-' + prop.id, 600, 400);
+    const pricePerCent = (prop.price / prop.area).toFixed(0);
+
+    return `
+        <div class="group bg-[#0a0a0a] border border-white/5 rounded-xl overflow-hidden card-hover glow-border cursor-pointer" onclick="openPropertyDetail(${prop.id})">
+            <div class="relative h-52 overflow-hidden">
+                <img src="${imgUrl}" alt="${prop.village} ${typeInfo.en}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy">
+                <div class="img-overlay absolute inset-0"></div>
+                <div class="absolute top-3 left-3 flex gap-2">
+                    <span class="property-tag px-2.5 py-1 rounded-md" style="background:${typeInfo.color}20; color:${typeInfo.color}">${typeInfo.label}</span>
+                    ${prop.price < 500000 ? '<span class="property-tag px-2.5 py-1 rounded-md status-urgent">அவசரம்</span>' : ''}
+                </div>
+                <div class="absolute bottom-3 left-3 right-3">
+                    <div class="text-2xl font-bold text-white">${formatPrice(prop.price)}</div>
+                    <div class="text-[10px] text-neutral-400 mt-0.5">${formatPriceFull(pricePerCent)} per cent</div>
+                </div>
+            </div>
+            <div class="p-5">
+                <h3 class="text-base font-semibold text-white mb-2 group-hover:text-[#00ffc4] transition-colors">${prop.village}, ${prop.taluk}</h3>
+                <p class="text-xs text-neutral-500 leading-relaxed mb-4 line-clamp-2">${prop.desc}</p>
+                <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                    <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-1.5 text-xs text-neutral-400">
+                            <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i> ${prop.area} cents
+                        </div>
+                        <div class="flex items-center gap-1.5 text-xs text-neutral-400">
+                            <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> ${prop.taluk}
+                        </div>
+                    </div>
+                    <div class="w-8 h-8 rounded-lg bg-[#047857]/10 border border-[#047857]/20 flex items-center justify-center group-hover:bg-[#047857]/20 transition-colors">
+                        <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-[#00ffc4]"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// ==================== FEATURED GRID ====================
+
+function renderFeatured() {
+    const grid = document.getElementById('featuredGrid');
+    const featured = properties.slice(0, 6);
+    grid.innerHTML = featured.map(p => createPropertyCard(p, true)).join('');
+    lucide.createIcons({ nodes: [grid] });
+}
+
+// ==================== TALUKS GRID ====================
+
+function renderTaluks() {
+    const grid = document.getElementById('taluksGrid');
+    const icons = ['landmark', 'wheat', 'temple', 'waves'];
+    const images = ['nagapattinam-temple-coast', 'kilvelur-green-farm', 'thirumarugal-ancient-temple', 'vedaranyam-salt-pan'];
+    const colors = ['#00ffc4', '#22c55e', '#f59e0b', '#06b6d4'];
+
+    let html = '';
+    Object.keys(talukData).forEach((taluk, i) => {
+        const data = talukData[taluk];
+        const propCount = properties.filter(p => p.taluk === taluk).length;
+        html += `
+            <div class="taluk-card relative overflow-hidden rounded-xl border border-white/5 bg-[#0a0a0a] group" onclick="filterByTaluk('${taluk}');showSection('listings')">
+                <div class="absolute inset-0">
+                    <img src="${getImgUrl(images[i], 500, 400)}" class="w-full h-full object-cover opacity-20 group-hover:opacity-30 transition-opacity duration-500" loading="lazy">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent"></div>
+                </div>
+                <div class="relative p-6">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:${colors[i]}15; border: 1px solid ${colors[i]}30;">
+                        <i data-lucide="${icons[i]}" class="w-6 h-6" style="color:${colors[i]}"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-1">${taluk}</h3>
+                    <p class="text-xs text-neutral-500 mb-4 leading-relaxed">${data.description}</p>
+                    <div class="flex items-center gap-4 text-xs">
+                        <span class="text-neutral-400"><strong class="text-white">${data.villages.length}</strong> villages</span>
+                        <span class="text-neutral-400"><strong class="text-white">${propCount}</strong> listings</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    grid.innerHTML = html;
+    lucide.createIcons({ nodes: [grid] });
+}
+
+// ==================== ALL LISTINGS ====================
+
+function getFilteredProperties() {
+    let filtered = [...properties];
+    const taluk = document.getElementById('filterTaluk').value;
+    const village = document.getElementById('filterVillage').value;
+    const type = document.getElementById('filterType').value;
+    const minPrice = parseInt(document.getElementById('filterMinPrice').value) || 0;
+    const maxPrice = parseInt(document.getElementById('filterMaxPrice').value) || Infinity;
+
+    if (taluk) filtered = filtered.filter(p => p.taluk === taluk);
+    if (village) filtered = filtered.filter(p => p.village === village);
+    if (type) filtered = filtered.filter(p => p.type === type);
+    filtered = filtered.filter(p => p.price >= minPrice && p.price <= maxPrice);
+
+    // Sort
+    const sort = document.getElementById('sortOrder').value;
+    switch(sort) {
+        case 'newest': filtered.sort((a, b) => new Date(b.date) - new Date(a.date)); break;
+        case 'price-low': filtered.sort((a, b) => a.price - b.price); break;
+        case 'price-high': filtered.sort((a, b) => b.price - a.price); break;
+        case 'area-large': filtered.sort((a, b) => b.area - a.area); break;
+    }
+    return filtered;
+}
+
+function renderListings() {
+    const filtered = getFilteredProperties();
+    const grid = document.getElementById('allListingsGrid');
+    const noResults = document.getElementById('noResults');
+    const count = document.getElementById('listingCount');
+
+    count.textContent = `${filtered.length} properties found`;
+
+    if (filtered.length === 0) {
+        grid.innerHTML = '';
+        noResults.classList.remove('hidden');
+    } else {
+        noResults.classList.add('hidden');
+        grid.innerHTML = filtered.map(p => createPropertyCard(p)).join('');
+        lucide.createIcons({ nodes: [grid] });
+    }
+}
+
+function filterListings() {
+    renderListings();
+}
+
+function clearFilters() {
+    document.getElementById('filterTaluk').value = '';
+    document.getElementById('filterVillage').innerHTML = '<option value="">All</option>';
+    document.getElementById('filterType').value = '';
+    document.getElementById('filterMinPrice').value = '';
+    document.getElementById('filterMaxPrice').value = '';
+    document.getElementById('sortOrder').value = 'newest';
+    renderListings();
+}
+
+function filterByTaluk(taluk) {
+    showSection('listings');
+    document.getElementById('filterTaluk').value = taluk;
+    updateFilterVillages();
+    renderListings();
+}
+
+function searchProperties() {
+    showSection('listings');
+    const taluk = document.getElementById('searchTaluk').value;
+    const village = document.getElementById('searchVillage').value;
+    const type = document.getElementById('searchType').value;
+
+    document.getElementById('filterTaluk').value = taluk;
+    updateFilterVillages();
+    setTimeout(() => {
+        document.getElementById('filterVillage').value = village;
+        document.getElementById('filterType').value = type;
+        renderListings();
+    }, 100);
+}
+
+function quickSearch(type) {
+    showSection('listings');
+    document.getElementById('filterTaluk').value = '';
+    document.getElementById('filterVillage').innerHTML = '<option value="">All</option>';
+    document.getElementById('filterType').value = type === 'under5L' ? '' : type;
+    document.getElementById('filterMinPrice').value = type === 'under5L' ? '0' : '';
+    document.getElementById('filterMaxPrice').value = type === 'under5L' ? '500000' : '';
+    renderListings();
+}
+
+// ==================== PROPERTY DETAIL ====================
+
+function openPropertyDetail(id) {
+    const prop = properties.find(p => p.id === id);
+    if (!prop) return;
+
+    const typeInfo = getTypeInfo(prop.type);
+    const pricePerCent = (prop.price / prop.area).toFixed(0);
+    const imgUrl = getImgUrl(prop.img || 'land-detail-' + prop.id, 800, 500);
+
+    const roadLabels = { 'tar-road': 'Tar Road', 'gravel-road': 'Gravel Road', 'no-road': 'No Road' };
+    const waterLabels = { 'borewell': 'Borewell', 'well': 'Open Well', 'canal': 'Canal', 'river': 'River', 'none': 'None' };
+
+    const content = document.getElementById('propertyDetailContent');
+    content.innerHTML = `
+        <div class="relative">
+            <img src="${imgUrl}" alt="${prop.village}" class="w-full h-64 md:h-80 object-cover">
+            <div class="img-overlay absolute inset-0"></div>
+            <button onclick="closeModal('propertyDetail')" class="absolute top-4 right-4 p-2 rounded-lg bg-black/50 backdrop-blur-md border border-white/10 hover:bg-black/70 transition-colors">
+                <i data-lucide="x" class="w-5 h-5 text-white"></i>
+            </button>
+            <div class="absolute bottom-4 left-4 flex gap-2">
+                <span class="property-tag px-3 py-1.5 rounded-lg" style="background:${typeInfo.color}20; color:${typeInfo.color}">${typeInfo.label}</span>
+            </div>
+        </div>
+
+        <div class="p-8">
+            <div class="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6">
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-semibold text-white">${prop.village}, ${prop.taluk}</h2>
+                    <p class="text-sm text-neutral-500 mt-1 flex items-center gap-1.5">
+                        <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
+                        Nagapattinam District, Tamil Nadu
+                    </p>
+                </div>
+                <div class="text-right">
+                    <div class="text-3xl font-bold text-[#00ffc4]">${formatPrice(prop.price)}</div>
+                    <div class="text-xs text-neutral-500">${formatPriceFull(pricePerCent)} per cent</div>
+                </div>
+            </div>
+
+            <!-- Details Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div class="bg-[#111] rounded-xl p-4 text-center">
+                    <i data-lucide="maximize-2" class="w-5 h-5 text-[#00ffc4] mx-auto mb-2"></i>
+                    <div class="text-lg font-bold text-white">${prop.area}</div>
+                    <div class="text-[10px] text-neutral-500 tracking-wider uppercase">Cents</div>
+                </div>
+                <div class="bg-[#111] rounded-xl p-4 text-center">
+                    <i data-lucide="ruler" class="w-5 h-5 text-[#00ffc4] mx-auto mb-2"></i>
+                    <div class="text-lg font-bold text-white">${(prop.area * 40.47).toFixed(0)}</div>
+                    <div class="text-[10px] text-neutral-500 tracking-wider uppercase">Sq. Meters</div>
+                </div>
+                <div class="bg-[#111] rounded-xl p-4 text-center">
+                    <i data-lucide="road" class="w-5 h-5 text-[#00ffc4] mx-auto mb-2"></i>
+                    <div class="text-sm font-bold text-white">${roadLabels[prop.road] || 'N/A'}</div>
+                    <div class="text-[10px] text-neutral-500 tracking-wider uppercase">Road Access</div>
+                </div>
+                <div class="bg-[#111] rounded-xl p-4 text-center">
+                    <i data-lucide="droplets" class="w-5 h-5 text-[#00ffc4] mx-auto mb-2"></i>
+                    <div class="text-sm font-bold text-white">${waterLabels[prop.water] || 'N/A'}</div>
+                    <div class="text-[10px] text-neutral-500 tracking-wider uppercase">Water Source</div>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-8">
+                <h3 class="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                    <i data-lucide="file-text" class="w-4 h-4 text-[#00ffc4]"></i> Description
+                </h3>
+                <p class="text-sm text-neutral-400 leading-relaxed">${prop.desc}</p>
+            </div>
+
+            <!-- Survey & Details -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                ${prop.survey ? `<div class="flex items-center gap-3 bg-[#111] rounded-lg px-4 py-3">
+                    <i data-lucide="file-search" class="w-4 h-4 text-neutral-500"></i>
+                    <div>
+                        <div class="text-[10px] text-neutral-500 tracking-wider uppercase">Survey No.</div>
+                        <div class="text-sm text-white font-medium">${prop.survey}</div>
+                    </div>
+                </div>` : ''}
+                <div class="flex items-center gap-3 bg-[#111] rounded-lg px-4 py-3">
+                    <i data-lucide="calendar" class="w-4 h-4 text-neutral-500"></i>
+                    <div>
+                        <div class="text-[10px] text-neutral-500 tracking-wider uppercase">Posted On</div>
+                        <div class="text-sm text-white font-medium">${new Date(prop.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Owner & Contact -->
+            <div class="bg-[#047857]/5 border border-[#047857]/20 rounded-xl p-6 mb-6">
+                <div class="text-[10px] font-bold text-[#00ffc4] tracking-widest uppercase mb-3">Owner Details</div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-[#047857]/20 flex items-center justify-center">
+                            <i data-lucide="user" class="w-6 h-6 text-[#00ffc4]"></i>
+                        </div>
+                        <div>
+                            <div class="text-base font-semibold text-white">${prop.name}</div>
+                            <div class="text-sm text-neutral-400 flex items-center gap-1.5 mt-0.5">
+                                <i data-lucide="phone" class="w-3.5 h-3.5"></i> ${prop.phone}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <a href="tel:${prop.phone}" class="btn-primary text-white text-sm font-semibold px-5 py-2.5 rounded-lg flex items-center gap-2">
+                            <i data-lucide="phone" class="w-4 h-4"></i> Call
+                        </a>
+                        <button onclick="closeModal('propertyDetail');openInquiry(${prop.id})" class="border border-[#00ffc4]/30 text-[#00ffc4] text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-[#00ffc4]/5 transition-colors flex items-center gap-2">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i> Inquiry
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Disclaimer -->
+            <div class="text-[10px] text-neutral-600 leading-relaxed p-4 bg-[#111] rounded-lg">
+                <strong>Disclaimer:</strong> இந்த விளம்பரம் தகவல் நோக்கத்திற்கு மட்டுமே. நில வாங்கும் முன் நேரடியாக பார்வையிட்டு, ஆவணங்களை சரிபார்த்து வாங்கவும். இணையதளம் எந்த பொறுப்பும் ஏற்றுக்கொள்ளாது. This listing is for information only. Verify documents and visit the land before purchasing.
+            </div>
+        </div>
+    `;
+    openModal('propertyDetail');
+    lucide.createIcons({ nodes: [content] });
+}
+
+function openInquiry(propId) {
+    document.getElementById('inquiryPropId').value = propId;
+    openModal('inquiry');
+}
+
+// ==================== VILLAGES SECTION ====================
+
+let selectedVillageTaluk = 'Nagapattinam';
+
+function renderVillagesSection() {
+    const tabsContainer = document.getElementById('villageTalukTabs');
+    const taluks = Object.keys(talukData);
+
+    tabsContainer.innerHTML = taluks.map(t => `
+        <button onclick="selectVillageTaluk('${t}')" class="tab-btn px-5 py-2.5 rounded-lg border text-sm font-medium transition-all ${t === selectedVillageTaluk ? 'active border-[#00ffc4] text-[#00ffc4] bg-[#00ffc4]/5' : 'border-white/10 text-neutral-400 hover:border-white/20'}">
+            ${t} <span class="text-xs opacity-60 ml-1">(${talukData[t].villages.length})</span>
+        </button>
+    `).join('');
+
+    renderVillageGrid();
+}
+
+function selectVillageTaluk(taluk) {
+    selectedVillageTaluk = taluk;
+    document.getElementById('villageProperties').classList.add('hidden');
+    renderVillagesSection();
+}
+
+function renderVillageGrid() {
+    const container = document.getElementById('villageListContainer');
+    const villages = talukData[selectedVillageTaluk].villages;
+
+    container.innerHTML = villages.map(v => {
+        const count = properties.filter(p => p.village === v).length;
+        return `
+            <button onclick="selectVillage('${v}')" class="village-chip bg-[#0a0a0a] border border-white/5 rounded-lg px-4 py-3 text-left hover:bg-[#00ffc4]/5">
+                <div class="text-sm font-medium text-neutral-200 truncate">${v}</div>
+                <div class="text-[10px] text-neutral-600 mt-0.5">${count} listing${count !== 1 ? 's' : ''}</div>
+            </button>
+        `;
+    }).join('');
+}
+
+function selectVillage(village) {
+    // Highlight selected
+    document.querySelectorAll('.village-chip').forEach(chip => {
+        chip.classList.remove('active');
+        if (chip.querySelector('.text-sm').textContent === village) {
+            chip.classList.add('active');
+        }
+    });
+
+    const villageProps = properties.filter(p => p.village === village);
+    const container = document.getElementById('villageProperties');
+    const title = document.getElementById('villagePropTitle');
+    const grid = document.getElementById('villagePropGrid');
+
+    title.innerHTML = `Properties in <span class="text-[#00ffc4]">${village}</span>`;
+
+    if (villageProps.length === 0) {
+        grid.innerHTML = `
+            <div class="col-span-full text-center py-16">
+                <i data-lucide="home" class="w-12 h-12 text-neutral-700 mx-auto mb-3"></i>
+                <p class="text-neutral-500">No listings in ${village} yet.</p>
+                <button onclick="openModal('addProperty')" class="mt-4 text-sm text-[#00ffc4] hover:underline">+ Post the first ad</button>
+            </div>
+        `;
+        lucide.createIcons({ nodes: [grid] });
+    } else {
+        grid.innerHTML = villageProps.map(p => createPropertyCard(p)).join('');
+        lucide.createIcons({ nodes: [grid] });
+    }
+
+    container.classList.remove('hidden');
+    container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ==================== FORM SUBMISSIONS ====================
+
+function submitProperty(e) {
+    e.preventDefault();
+
+    const newProp = {
+        id: nextId++,
+        name: document.getElementById('propName').value,
+        phone: document.getElementById('propPhone').value,
+        taluk: document.getElementById('propTaluk').value,
+        village: document.getElementById('propVillage').value,
+        type: document.getElementById('propType').value,
+        area: parseInt(document.getElementById('propArea').value),
+        price: parseInt(document.getElementById('propPrice').value),
+        road: document.getElementById('propRoad').value,
+        water: document.getElementById('propWater').value,
+        desc: document.getElementById('propDesc').value || 'No description provided.',
+        survey: document.getElementById('propSurvey').value,
+        date: new Date().toISOString().split('T')[0],
+        img: 'new-land-listing-' + nextId
+    };
+
+    properties.unshift(newProp);
+    closeModal('addProperty');
+    e.target.reset();
+
+    showToast('உங்கள் விளம்பரம் வெற்றிகரமாக பதிவு செய்யப்பட்டது! Your ad has been posted successfully!', 'success');
+    renderFeatured();
+    renderTaluks();
+}
+
+function submitInquiry(e) {
+    e.preventDefault();
+    closeModal('inquiry');
+    e.target.reset();
+    showToast('உங்கள் விசாரணை அனுப்பப்பட்டது! Inquiry sent successfully!', 'success');
+}
+
+function submitContact(e) {
+    e.preventDefault();
+    e.target.reset();
+    showToast('உங்கள் செய்தி அனுப்பப்பட்டது! Message sent successfully!', 'success');
+}
+
+// ==================== ANIMATED COUNTERS ====================
+
+function animateCounter(elementId, target, duration = 2000) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+    let start = 0;
+    const step = target / (duration / 16);
+    function update() {
+        start += step;
+        if (start >= target) {
+            el.textContent = target.toLocaleString();
+            return;
+        }
+        el.textContent = Math.floor(start).toLocaleString();
+        requestAnimationFrame(update);
+    }
+    update();
+}
+
+// ==================== INITIALIZATION ====================
+
+function init() {
+    populateDropdowns();
+    renderFeatured();
+    renderTaluks();
+
+    // Animate stats
+    setTimeout(() => {
+        animateCounter('statListings', properties.length, 1500);
+        const totalVillages = Object.values(talukData).reduce((sum, t) => sum + t.villages.length, 0);
+        animateCounter('statVillages', totalVillages, 2000);
+        animateCounter('statDeals', 347, 1800);
+    }, 500);
+
+    lucide.createIcons();
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
